@@ -1,52 +1,72 @@
 # Sistem Deteksi Teks Buatan AI Menggunakan NLP
 
-## Deskripsi
+## 📌 Overview
 
-Proyek ini merupakan implementasi sistem untuk mendeteksi apakah suatu teks merupakan teks yang dibuat oleh manusia atau dihasilkan oleh Artificial Intelligence (AI).
+Proyek ini merupakan implementasi sistem untuk mendeteksi apakah suatu teks merupakan teks yang dibuat oleh manusia atau dihasilkan oleh Artificial Intelligence (AI) menggunakan pendekatan **Natural Language Processing (NLP)** dan **Machine Learning**.
 
-Sistem memanfaatkan metode **Natural Language Processing (NLP)** untuk melakukan preprocessing teks, ekstraksi fitur menggunakan **TF-IDF**, serta klasifikasi menggunakan algoritma **Logistic Regression** dan **Linear Support Vector Machine (SVM)**.
+Dataset yang digunakan berisi pasangan pertanyaan dan jawaban dengan label **Human** dan **AI**. Teks diproses melalui beberapa tahapan preprocessing, kemudian direpresentasikan menggunakan **TF-IDF** sebelum digunakan untuk proses klasifikasi.
 
-Proyek ini dibuat sebagai tugas mata kuliah **Pemrosesan Teks**.
+Dua algoritma machine learning yang digunakan dalam eksperimen ini adalah **Logistic Regression** dan **Linear Support Vector Machine (SVM)**.
 
-## Tujuan
+---
+
+## 🎯 Objectives
 
 Tujuan dari proyek ini adalah:
 
+- Menganalisis karakteristik teks pada dataset.
 - Melakukan preprocessing terhadap data teks.
-- Mengekstraksi karakteristik teks menggunakan TF-IDF.
-- Membangun model klasifikasi untuk membedakan teks manusia dan teks AI.
+- Mengubah teks menjadi representasi numerik menggunakan TF-IDF.
+- Membangun model klasifikasi untuk membedakan teks buatan manusia dan teks buatan AI.
 - Membandingkan performa Logistic Regression dan Linear SVM.
-- Mengevaluasi performa model menggunakan beberapa metrik klasifikasi.
+- Mengevaluasi hasil klasifikasi menggunakan beberapa metrik evaluasi.
 
-## Dataset
+---
 
-Dataset yang digunakan adalah **HC3 (Human ChatGPT Comparison Corpus)** dalam format klasifikasi biner.
+## 📊 Dataset
 
-Dataset terdiri dari teks dengan dua label:
+Dataset utama yang digunakan dalam proyek ini adalah **HC3 (Human ChatGPT Comparison Corpus)** dalam format klasifikasi biner.
 
-- `Human` — teks yang ditulis oleh manusia.
-- `AI` — teks yang dihasilkan oleh AI.
+Dataset terdiri dari:
 
-Dataset tidak disertakan secara langsung di repository karena ukuran file dan pertimbangan pengelolaan data.
+- **85.449 data**
+- **3 kolom:** `question`, `answer`, dan `label`
+- **58.546 teks Human**
+- **26.903 teks AI**
+- **18 missing value** pada kolom `answer`
+- **3.019 duplicate data**
 
-## Metodologi
+Label yang digunakan:
 
-Tahapan utama dalam proyek ini meliputi:
+| Label | Jumlah |
+|-------|-------:|
+| Human | 58.546 |
+| AI | 26.903 |
+| **Total** | **85.449** |
 
-1. Exploratory Data Analysis (EDA)
-2. Pemeriksaan missing value dan duplicate data
-3. Text preprocessing
-4. Tokenization
-5. Stopword removal
-6. Lemmatization
-7. TF-IDF feature extraction
-8. Model training
-9. Model evaluation
-10. Perbandingan performa model
+Dataset utama tidak disertakan langsung dalam repository karena ukuran file dan pertimbangan pengelolaan data.
 
-### Text Preprocessing
+---
 
-Tahapan preprocessing yang digunakan meliputi:
+## 🔬 Methodology
+
+### 1. Exploratory Data Analysis
+
+Analisis awal dilakukan untuk memahami karakteristik dataset, distribusi label, missing value, duplicate data, panjang teks, serta karakteristik kata pada masing-masing kelas.
+
+Beberapa analisis yang dilakukan meliputi:
+
+- Pemeriksaan struktur dan ukuran dataset
+- Pemeriksaan missing value
+- Pemeriksaan duplicate data
+- Analisis distribusi label
+- Analisis panjang teks
+- Analisis kata yang sering muncul
+- Visualisasi WordCloud untuk kelas Human dan AI
+
+### 2. Text Preprocessing
+
+Tahapan preprocessing meliputi:
 
 - Case folding
 - Penghapusan tanda baca dan simbol
@@ -55,50 +75,169 @@ Tahapan preprocessing yang digunakan meliputi:
 - Stopword removal
 - Lemmatization
 
-### Feature Extraction
+### 3. Feature Extraction
 
-Representasi teks dilakukan menggunakan **TF-IDF (Term Frequency-Inverse Document Frequency)** dengan konfigurasi:
+Teks yang telah melalui preprocessing direpresentasikan menggunakan **TF-IDF (Term Frequency-Inverse Document Frequency)**.
 
-- `max_features = 5000`
-- `ngram_range = (1, 2)`
-- `min_df = 2`
+Konfigurasi yang digunakan:
 
-### Machine Learning Models
+```python
+TfidfVectorizer(
+    max_features=5000,
+    ngram_range=(1, 2),
+    min_df=2
+)
+```
 
-Dua algoritma klasifikasi digunakan dalam proyek ini:
+Parameter yang digunakan:
+
+| Parameter | Nilai |
+|-----------|-------|
+| `max_features` | 5000 |
+| `ngram_range` | (1, 2) |
+| `min_df` | 2 |
+
+Hasil ekstraksi menghasilkan matriks dengan ukuran:
+
+```text
+85.449 samples × 5.000 features
+```
+
+Sparsity matriks sekitar **99,14%**.
+
+### 4. Machine Learning
+
+Dua algoritma digunakan dalam eksperimen:
 
 - Logistic Regression
 - Linear Support Vector Machine (SVM)
 
-## Hasil
+### 5. Evaluation
 
-Berdasarkan eksperimen yang dilakukan:
+Evaluasi dilakukan menggunakan:
 
-| Model | Accuracy | Macro F1-Score |
-|---|---:|---:|
-| Logistic Regression | 94.59% | 0.94 |
-| Linear SVM | 95.45% | 0.95 |
-
-Model **Linear SVM** memperoleh accuracy sebesar **95.45%** pada eksperimen yang dilakukan.
-
-Evaluasi model juga dilakukan menggunakan:
-
+- Accuracy
+- Precision
+- Recall
+- F1-Score
 - Confusion Matrix
-- Classification Report
 - ROC Curve
 - AUC
 
-## Struktur Repository
+---
+
+## 📈 Results
+
+Hasil eksperimen menunjukkan performa sebagai berikut:
+
+| Model | Accuracy | Macro F1-Score |
+| ------------------- | -------- | -------------- |
+| Logistic Regression | 94.59% | 0.94 |
+| Linear SVM | 95.45% | 0.95 |
+
+Pada eksperimen ini, **Linear SVM memperoleh accuracy sebesar 95.45% dan Macro F1-Score sebesar 0.95**.
+
+Untuk evaluasi ROC, **Logistic Regression memperoleh nilai AUC sebesar 0.9858**.
+
+> **Catatan:** hasil tersebut merupakan hasil eksperimen pada notebook proyek dan dapat dipengaruhi oleh dataset, preprocessing, konfigurasi TF-IDF, serta proses pembagian data yang digunakan.
+
+---
+
+## 🖼️ Project Results
+
+Beberapa hasil analisis dan evaluasi model dapat dilihat pada folder [`screenshots/`](screenshots/).
+
+### Distribusi Label
+
+![Distribusi Label](screenshots/label_distribution.png)
+
+### WordCloud Teks Human
+
+![WordCloud Human](screenshots/wordcloud_human.png)
+
+### WordCloud Teks AI
+
+![WordCloud AI](screenshots/wordcloud_ai.png)
+
+### Confusion Matrix Linear SVM
+
+![Confusion Matrix SVM](screenshots/confusion_matrix_svm.png)
+
+### ROC Curve
+
+![ROC Curve](screenshots/roc_curve.png)
+
+---
+
+## 📁 Repository Structure
 
 ```text
 sistem-deteksi-teks-ai-nlp/
+│
+├── README.md
+│
 ├── notebooks/
 │   └── KODE_PROYEK_PEMTEKS_KEL_10.ipynb
-├── results/
-│   ├── cleaned_preview.csv
-│   ├── tfidf_features.csv
-│   └── tfidf_matrix_shape.txt
-├── screenshots/
+│
 ├── data/
 │   └── README.md
-└── README.md
+│
+├── results/
+│   ├── README.md
+│   ├── tfidf_features.csv
+│   ├── tfidf_matrix_shape.txt
+│   └── cleaned_preview.csv
+│
+└── screenshots/
+    ├── confusion_matrix_svm.png
+    ├── label_distribution.png
+    ├── roc_curve.png
+    ├── wordcloud_ai.png
+    └── wordcloud_human.png
+```
+
+---
+
+## 🛠️ Tools & Technologies
+
+- **Python**
+- **Jupyter Notebook**
+- **Pandas**
+- **NumPy**
+- **Scikit-learn**
+- **NLTK**
+- **Matplotlib**
+- **Seaborn**
+- **WordCloud**
+- **Natural Language Processing**
+- **TF-IDF**
+- **Logistic Regression**
+- **Linear SVM**
+
+---
+
+## 📓 Notebook
+
+Implementasi lengkap proses analisis dan pemodelan tersedia pada:
+
+[`KODE_PROYEK_PEMTEKS_KEL_10.ipynb`](notebooks/KODE_PROYEK_PEMTEKS_KEL_10.ipynb)
+
+Notebook mencakup proses mulai dari eksplorasi data, preprocessing, feature extraction, training model, hingga evaluasi.
+
+---
+
+## 📌 Notes
+
+Dataset utama tidak disertakan langsung dalam repository karena ukuran file dan pertimbangan pengelolaan data.
+
+File hasil eksperimen yang berukuran besar juga tidak seluruhnya disertakan. Repository ini berfokus pada dokumentasi proses, notebook, hasil eksperimen yang relevan, dan visualisasi.
+
+---
+
+## 👩‍💻 Author
+
+**Annisa Ramadhani**
+
+Data Science Student
+
+GitHub: [@annisa-ramadhni](https://github.com/annisa-ramadhni)
